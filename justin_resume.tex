@@ -1,0 +1,287 @@
+%----------------------------------------------------------------------------------------
+% justin_resume.tex — Justin Paul Spicer
+% Engine: LuaLaTeX (LaTeX 2023+). Compile with: lualatex justin_resume.tex
+%
+% \DocumentMetadata must appear before \documentclass for PDF/UA-2 compliance.
+%----------------------------------------------------------------------------------------
+
+\DocumentMetadata{
+  lang        = en-US,
+  pdfversion  = 2.0,
+  pdfstandard = UA-2,
+}
+\documentclass[11pt,letterpaper]{article}
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES
+%----------------------------------------------------------------------------------------
+
+\usepackage{etoolbox}           % \@ifundefined and other conditionals
+\usepackage{fontspec}           % LuaLaTeX OpenType font loading
+\usepackage{microtype}          % Microtypography (protrusion, expansion)
+\usepackage[parfill]{parskip}   % No paragraph indentation
+\usepackage{array}              % Extended column specifiers
+\usepackage{ifthen}             % \ifthenelse
+\usepackage{enumitem}           % Fine-grained list control
+\usepackage{geometry}           % Page layout
+\usepackage{hyperref}           % Hyperlinks and PDF metadata
+\usepackage{tagpdf}             % PDF/UA-2 tagging
+
+%----------------------------------------------------------------------------------------
+%	PAGE LAYOUT
+%----------------------------------------------------------------------------------------
+
+\geometry{left=1in, right=1in, top=0.5in, bottom=1in}
+\pagestyle{empty}
+
+%----------------------------------------------------------------------------------------
+%	NAMED SPACING MACROS
+%----------------------------------------------------------------------------------------
+
+\def\resumeNameSize{\LARGE}
+\def\resumeSectionSkip{\medskip}
+\def\resumeSectionLineSkip{\smallskip}
+\def\resumeCompanySize{\large}
+
+%----------------------------------------------------------------------------------------
+%	CONTACT COMMANDS (semantic, with hyperlinks)
+%----------------------------------------------------------------------------------------
+
+\makeatletter
+\newcommand{\name}[1]{\def\@resumeName{#1}}
+\newcommand{\contactLineOne}[1]{\def\@contactLineOne{#1}}
+\newcommand{\contactLineTwo}[1]{\def\@contactLineTwo{#1}}
+\newcommand{\contactLineThree}[1]{\def\@contactLineThree{#1}}
+\makeatother
+\newcommand{\email}[1]{\href{mailto:#1}{#1}}
+\newcommand{\tel}[1]{\href{tel:#1}{#1}}
+\newcommand{\linkedin}[2]{\href{#1}{#2}}
+\newcommand{\github}[2]{\href{#1}{#2}}
+\newcommand{\website}[2]{\href{#1}{#2}}
+\newcommand{\contactSep}{\enspace\textbar\enspace}
+
+%----------------------------------------------------------------------------------------
+%	GLOBAL LIST SETTINGS
+%----------------------------------------------------------------------------------------
+
+\setlist[itemize]{noitemsep,topsep=2pt,parsep=3pt,partopsep=0pt}
+
+%----------------------------------------------------------------------------------------
+%	HEADER
+%----------------------------------------------------------------------------------------
+
+\makeatletter
+\AddToHook{begindocument}{%
+  \tagstructbegin{tag=Sect/pdf}%
+  {\centering
+    \tagstructbegin{tag=P/pdf}{\resumeNameSize\textbf{\@resumeName}}\tagstructend\par\vspace{2pt}%
+    \@ifundefined{@contactLineOne}{}{%
+      \tagstructbegin{tag=P/pdf}\@contactLineOne\tagstructend\par\vspace{2pt}}%
+    \@ifundefined{@contactLineTwo}{}{%
+      \tagstructbegin{tag=P/pdf}\@contactLineTwo\tagstructend\par\vspace{2pt}}%
+    \@ifundefined{@contactLineThree}{}{%
+      \tagstructbegin{tag=P/pdf}\@contactLineThree\tagstructend\par}%
+  }%
+  \tagstructend%
+  \vspace{0.5em}%
+}
+\makeatother
+
+%----------------------------------------------------------------------------------------
+%	SECTION FORMATTING
+%----------------------------------------------------------------------------------------
+
+\newenvironment{rSection}[1]{%
+  \resumeSectionSkip
+  \tagstructbegin{tag=Sect/pdf}%
+  \tagstructbegin{tag=H1/pdf}%
+  \tagmcbegin{tag=H1}%
+  \textbf{\MakeUppercase{#1}}%
+  \tagmcend\tagstructend
+  \resumeSectionLineSkip
+  \tagmcbegin{artifact}\hrule\tagmcend{}%
+  \begingroup\setlength{\leftskip}{1.5em}%
+  \noindent\ignorespaces
+}{%
+  \par\endgroup
+  \tagstructend%
+}
+
+%----------------------------------------------------------------------------------------
+%	WORK EXPERIENCE FORMATTING
+%----------------------------------------------------------------------------------------
+
+% rSubsection{company}{dates}{title}{location}
+% The itemize list is built in — do NOT add \begin{itemize} inside.
+\newenvironment{rSubsection}[4]{%
+  \tagstructbegin{tag=H2/pdf}%
+  \tagmcbegin{tag=H2}%
+  {\bfseries\resumeCompanySize #1}\hfill{#2}%
+  \ifthenelse{\equal{#3}{}}{}{%
+    \\{\em #3}\hfill{\em #4}%
+  }%
+  \parfillskip=0pt\tagmcend\tagstructend
+  \smallskip
+  \begin{itemize}[leftmargin=*]
+}{%
+  \end{itemize}
+  \vspace{0.5em}
+}
+
+%----------------------------------------------------------------------------------------
+%	SKILL CATEGORY FORMATTING
+%----------------------------------------------------------------------------------------
+
+\newcommand{\skillCategory}[2]{%
+  \tagstructbegin{tag=P/pdf}\textbf{#1:} #2\tagstructend\\[2pt]%
+}
+
+%----------------------------------------------------------------------------------------
+%	PDF/UA TAGGING ACTIVATION
+%----------------------------------------------------------------------------------------
+
+\tagpdfsetup{activate=Document, uncompress}
+
+% Content %
+
+%----------------------------------------------------------------------------------------
+%	PDF METADATA AND HYPERLINK SETTINGS
+%----------------------------------------------------------------------------------------
+
+\hypersetup{
+  pdfauthor   = {Justin Paul Spicer},
+  pdftitle    = {Justin Spicer — Full-Stack .NET Technical Lead},
+  pdfsubject  = {Resume},
+  pdfkeywords = {.NET, C\#, Sitefinity, Kentico, Umbraco, Azure, Full Stack Developer,
+                 Web Developer, Technical Lead, CMS, Blazor, Vue.js, Angular, React},
+  colorlinks  = true,
+  urlcolor    = blue,
+}
+
+\name{Justin Paul Spicer}
+\contactLineOne{Chicago, IL}
+\contactLineTwo{%
+  \linkedin{https://www.linkedin.com/in/justin-spicer-63b6606b}{LinkedIn}%
+  \contactSep%
+  \github{https://github.com/MrSpicer}{GitHub}%
+  \contactSep%
+  \website{https://www.justinspicer.com}{justinspicer.com}%
+}
+
+\contactLineThree{%
+  \email{justin@justinspicer.com}%
+  \contactSep%
+  \tel{+1-812-449-9158}%
+}
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	PROFESSIONAL SUMMARY
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{Professional Summary}
+\tagstructbegin{tag=P/pdf}%
+Full-stack .NET technical lead with 10+ years architecting enterprise CMS solutions (Sitefinity, Kentico, Umbraco) for Fortune 500 clients, government agencies, and financial institutions. Proven track record leading cross-functional teams, designing scalable architectures integrating Azure services and SPA frameworks, and rescuing stalled projects to successful delivery.%
+\tagstructend
+\end{rSection}
+
+%----------------------------------------------------------------------------------------
+%	WORK EXPERIENCE
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{Work Experience}
+
+% --- BlueModus (2023–present) ---
+\begin{rSubsection}{BlueModus}{2023--present}{Web Developer Lead}{Remote -- Chicago}
+  \item Led architecture of a multi-site Sitefinity migration leveraging Azure FrontDoor to unify legacy and greenfield systems, enabling incremental modernization without downtime
+  \item Designed and delivered an Azure AI--powered automated content tagging system, reducing manual categorization effort across a portfolio of production sites
+  \item Spearheaded a stalled Sitefinity partial redesign, re-establishing project momentum and delivering the client's launch goals on a revised timeline
+  \item Architected a Sitefinity 15 greenfield project on the new .NET Core renderer, establishing patterns adopted across the team
+  \item Researched, architected, and delivered a custom data migration platform for a global Am Law 100 firm, mapping and migrating legacy Sitefinity content --- including taxonomy, media assets, and URL redirects --- to WordPress, eliminating weeks of manual data work
+  \item Contributed to a medical product catalog for a leading manufacturer in Kentico, implementing product import/export pipelines and Azure Search indexing
+  \item Extended a custom Blazor/.NET MVC sales configurator for a major industrial manufacturer, delivering new product configuration workflows
+  \item Delivered internal Sitefinity training to the BlueModus development team covering architecture, implementation patterns, and troubleshooting
+  \item Supported a Contentstack (headless CMS)/Next.js financial marketing site, implementing content model changes and frontend components
+  \item Integrated agentic AI development tools (GitHub Copilot, Claude, and OpenCode) into daily workflow, accelerating delivery and code quality across projects
+\end{rSubsection}
+
+% --- AmericanEagle.com (2019–2022) ---
+\begin{rSubsection}{AmericanEagle.com}{2019--2022}{Senior Sitefinity Developer}{Chicago, IL}
+  \item Led development and launch of a complete financial services marketing site redesign from requirements through production deployment
+  \item Managed project backlog and coordinated a 3-person development team, balancing priorities across concurrent client engagements
+  \item Designed and implemented Vue.js SPAs embedded within Sitefinity sites, including an ATM locator and a health insurance plan selection tool
+  \item Architected middleware APIs consuming external business data for a multinational vehicle battery manufacturer's dealer network
+  \item Configured and maintained CI/CD pipelines and source control workflows in Azure DevOps for multiple concurrent projects
+  \item Maintained and extended an AngularJS SPA integrated with Sitefinity and third-party backends through Phase 2 feature delivery
+  \item Contributed to a React/Sitefinity NFL team fan rewards portal, implementing backend integrations and content management features
+  \item Gathered requirements directly from clients and translated business needs into technical solutions using C\#, JavaScript, TypeScript, and ASP.NET/Sitefinity
+\end{rSubsection}
+
+% --- InGen Technologies (2013–2019) ---
+\begin{rSubsection}{InGen Technologies}{2013--2019}{Full Stack Web Developer}{Evansville, IN}
+  \item Designed and built an industry-leading document search engine and market information portal (Sitefinity WebForms) that drove user engagement growth and directly contributed to a Fortune 500 acquisition of the client
+  \item Developed a companion Xamarin.Forms iOS app with ASP.NET WebAPI backend for the document search platform, featuring real-time push notifications
+  \item Implemented Dynamics CRM 365 and SSRS for a large multinational manufacturer, integrating customer and lead data from 5 separate ERP systems via an Oracle data warehouse and SSIS
+  \item Designed and built Vue.js and Angular mini-SPAs including an ATM locator for a regional bank
+  \item Configured Azure services across projects including CI/CD pipelines, server hosting, and Azure Search for a proprietary Sitefinity Search add-on
+  \item Contributed to an Angular airport security baggage monitoring system interfacing with hardware scanner APIs
+  \item Performed Sitefinity site audits and version upgrades for Progress Software and agency clients
+\end{rSubsection}
+
+\end{rSection}
+
+%----------------------------------------------------------------------------------------
+%	PERSONAL PROJECTS
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{Personal Projects}
+  \tagstructbegin{tag=P/pdf}\textbf{BlazorTodo} --- Blazor Server / .NET 10 / Docker\tagstructend
+  \begin{itemize}
+    \item Architected and deployed a client-side task management application using Blazor Server (.NET 10), leveraging browser localStorage for zero-backend persistence with optional temporary in memory storage for synchronizing between devices; containerized with Docker and published to Docker Hub
+  \end{itemize}
+  \smallskip
+  \tagstructbegin{tag=P/pdf}\textbf{justinspicer.com} --- ASP.NET Core MVC / PostgreSQL\tagstructend
+  \begin{itemize}
+    \item Engineered a custom CMS platform using ASP.NET Core MVC (.NET 10), PostgreSQL, implemented NUnit test suite, Serilog structured logging, AutoMapper, and SCSS-based frontend. self hosted using a VPS, Docker, and cloudflare Tunnels
+  \end{itemize}
+\end{rSection}
+
+%----------------------------------------------------------------------------------------
+%	TECHNICAL SKILLS
+% Edit categories and skills below.
+% Format: \skillCategory{Category Name}{skill1, skill2, ...}
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{Technical Skills}
+  \skillCategory{Languages}{C\#, JavaScript, TypeScript, C/C++}
+  \skillCategory{Frameworks}{.NET Core, .Net Framework, ASP.NET MVC/WebAPI/Blazor, Vue.js, Angular, React, Xamarin/MAUI}
+  \skillCategory{CMS Platforms}{Sitefinity, Kentico, Umbraco, Contentstack}
+  \skillCategory{Cloud \& DevOps}{Azure (Search, FrontDoor, AI Services), Azure DevOps, Git, CI/CD, Linux/Windows Server}
+  \skillCategory{Data}{MS SQL Server/T-SQL, Oracle, SSIS, SSRS}
+\end{rSection}
+
+%----------------------------------------------------------------------------------------
+%	CERTIFICATIONS
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{Certifications}
+  \begin{itemize}
+    \item Kentico Xperience 13 Certified Developer
+    \item Kentico Xperience 13 Marketing Certification
+    \item Sitefinity Basic/Advanced Development Certifications
+  \end{itemize}
+\end{rSection}
+
+%----------------------------------------------------------------------------------------
+%	EDUCATION
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{Education}
+  \tagstructbegin{tag=P/pdf}%
+  {\bfseries\large University of Evansville}\hfill{2008--2012}\\
+  {\em Bachelor of Arts in Archaeology; minors in Computer Science and Classical Studies}\hfill{\em Evansville, IN}%
+  \tagstructend
+\end{rSection}
+
+\end{document}
